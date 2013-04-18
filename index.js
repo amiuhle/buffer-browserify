@@ -390,6 +390,36 @@ function Buffer(subject, encoding, offset) {
     }
   }
 
+  // console.log(Proxy);
+
+  // var proxy = Proxy(this, {
+  //   get: function(target, name, receiver) {
+  //     console.log('get', target, name, receiver);
+  //   },
+  //   set: function(target, name, val, receiver) {
+  //     console.log('set', target, name, val, receiver);
+  //   }
+  // });
+
+  // console.log(proxy, proxy[0]);
+
+
+  var self = this;
+  for(var i = 0; i < this.length; i++) {
+    (function(index) {
+      Object.defineProperty(self, index, {
+        get: function() {
+          return self.get(index);
+        },
+        set: function(value) {
+          return self.set(index, value);
+        },
+        configurable: true,
+        enumerable: true
+      });
+    })(i);
+  }
+
 }
 
 function isArrayIsh(subject) {
